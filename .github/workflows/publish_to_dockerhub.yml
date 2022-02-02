@@ -1,10 +1,8 @@
-name: Publish Docker image on DockerHub
+name: Publish Docker image to DockerHub
+
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'Dockerfile'
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -21,14 +19,14 @@ jobs:
       uses: anothrNick/github-tag-action@1.17.2
       id: bump
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
 
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
         tag_name: ${{ steps.bump.outputs.new_tag }}
         release_name: ${{ steps.bump.outputs.new_tag }}
